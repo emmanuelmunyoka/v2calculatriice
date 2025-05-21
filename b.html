@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculatrice</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .calculator-header {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #2c3e50;
+        font-size: 2.5em;
+        font-weight: 600;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        position: relative;
+        padding: 20px;
+      }
+
+      .calculator-header::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 4px;
+        background: linear-gradient(90deg, #4caf50, #45a049);
+        border-radius: 2px;
+      }
+
+     
+
+      #box {
+        width: 300px;
+        height: 80px;
+        background-color: #ffffff;
+        font-size: 32px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        padding: 10px;
+        text-align: right;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e0e0e0;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
+
+      #b {
+        width: 60px;
+        height: 60px;
+        background-color: #ffffff;
+        border: none;
+        border-radius: 50%;
+        margin: 5px;
+        font-size: 24px;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        color: #2c3e50;
+      }
+
+      #b:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        background-color: #f8f9fa;
+      }
+
+      #signes {
+        width: 60px;
+        height: 60px;
+        background-color: #4caf50;
+        border: none;
+        border-radius: 50%;
+        margin: 5px;
+        font-size: 24px;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        color: white;
+      }
+
+      #signes:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        background-color: #45a049;
+      }
+
+      .calculContenaire {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+
+      .buttonsContenaire {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: 300px;
+      }
+      h1 {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+
+    <h1 class="calculator-header">Calculatrice</h1>
+    <div class="calculContenaire">
+      <div id="box"></div>
+      <div class="buttonsContenaire">
+        <script>
+          const but = document.querySelector(".buttonsContenaire");
+          const box = document.getElementById("box");
+          const chiffre = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+          const signe = ["+ ", " - ", " / ", " * ", "."];
+          const assignation = ["=", "←", "√", "e^", "CE"];
+          function operetion() {
+            for (let h of chiffre) {
+              const buttonC = document.createElement("button");
+              buttonC.id = "b";
+              buttonC.textContent = h;
+           
+              buttonC.addEventListener("click", () => {
+                if(box.innerText.length >= 15){
+                box.style.fontSize = "22px";
+              }
+          
+              else if(box.innerText.length >= 25){
+                box.style.fontSize = "15px";
+              }
+              else{
+            
+                box.style.fontSize = "32px";
+              }
+                box.innerText += h;
+                console.log( box)
+              });
+              document.querySelector(".buttonsContenaire").appendChild(buttonC);
+        
+            }
+          }
+
+          function operateur() {
+            for (let op of signe) {
+              const buttonSigne = document.createElement("button");
+              buttonSigne.id = "signes";
+              buttonSigne.textContent = op;
+              buttonSigne.addEventListener("click", () => {
+                const lastChar = box.innerText.slice(-1);
+  if (!op.includes(lastChar)) {
+    box.innerText += op;
+  }
+              });
+
+              but.appendChild(buttonSigne);
+            }
+          }
+          const effacer = document.createElement("button");
+          effacer.id = "signes";
+          effacer.style.backgroundColor = "red";
+          effacer.textContent = assignation[1];
+          effacer.addEventListener("click", (e) => {
+            box.innerText = "";
+          });
+          but.appendChild(effacer);
+          function egale() {
+            const buttonegale = document.createElement("button");
+            buttonegale.id = "signes";
+            buttonegale.textContent = assignation[0];
+            buttonegale.style.backgroundColor = "orange";
+            buttonegale.addEventListener("click", () => {
+              box.innerText = eval(box.textContent);
+            });
+            but.appendChild(buttonegale);
+          }
+          function racine() {
+            const rac = document.createElement("button");
+            rac.id = "signes";
+            rac.textContent = assignation[2];
+            rac.addEventListener("click", () => {
+              box.innerText **= 0.5;
+            });
+            but.appendChild(rac);
+          }
+          function exposant() {
+            const ex = document.createElement("button");
+            ex.id = "signes";
+            ex.textContent = assignation[3];
+
+            ex.addEventListener("click", () => {
+              box.innerText += "**";
+            });
+            but.appendChild(ex);
+          }
+          function CE() {
+            const ce = document.createElement("button");
+            ce.id = "signes";
+            ce.textContent = assignation[4];
+            ce.style.backgroundColor = "grey";
+            ce.addEventListener("click", () => {
+              box.innerText = box.innerText.slice(0, -1);
+            });
+            but.appendChild(ce);
+          }
+          operetion();
+          CE();
+          operateur();
+          racine();
+          exposant();
+          egale();
+         
+        </script>
+      </div>
+    </div>
+  </body>
+</html>
